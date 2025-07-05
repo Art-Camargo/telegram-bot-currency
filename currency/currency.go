@@ -3,6 +3,7 @@ package currency
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -21,11 +22,15 @@ func execExchange(coin string, currency string) (float32, error) {
 	resp, err := http.Get(QueryBuilder(coin, currency))
 	if err != nil {
 		return 0, fmt.Errorf("erro ao fazer requisição: %v", err)
+	} else {
+		log.Printf("Requisição feita com sucesso para %s em %s", coin, currency)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return 0, fmt.Errorf("erro na resposta da API: status %d", resp.StatusCode)
+	} else {
+		log.Printf("Resposta da API recebida com sucesso: status %d", resp.StatusCode)
 	}
 
 	var data map[string]map[string]float32
@@ -41,6 +46,7 @@ func sendTelegramMessage(coin string, price float32) {
   if(coin == "" || price <= 0) {
 		return
 	}
+	coin = strings.ToLower(coin)
 
 	if coin == "bitcoin" && price < 600_000 {
 		telegram.SendMessage(
@@ -58,11 +64,11 @@ func sendTelegramMessage(coin string, price float32) {
 		telegram.SendMessage(
 			fmt.Sprintf("O preço do %s em BRL é: R$ %.2f e é interessante vender", coin, price),
 		)
-	}
-
+	} 
 }
 
 func RunExchanges() {
+	log.Print("Iniciando o bot de monitoramento de moedas...")
 	coins := []string{"bitcoin", "ethereum"}
 
 	for {
@@ -81,6 +87,6 @@ func RunExchanges() {
 		}
 
 
-		sleepOS(1) 
+		sleepOS(5) 
 	}
 }
