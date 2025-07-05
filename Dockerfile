@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o app
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
 
 # Etapa 2: imagem final (sem Go instalado)
 FROM debian:bullseye-slim
@@ -17,6 +17,9 @@ WORKDIR /opt/app
 
 # Copia só o binário para a imagem final
 COPY --from=builder /app/app .
+COPY .env .
+
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # (Opcional) adiciona um usuário não root
 RUN useradd -m appuser
