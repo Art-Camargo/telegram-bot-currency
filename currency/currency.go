@@ -47,24 +47,28 @@ func sendTelegramMessage(coin string, price float32) {
 		return
 	}
 	coin = strings.ToLower(coin)
-
-	if coin == "bitcoin" && price < 600_000 {
-		telegram.SendMessage(
-			fmt.Sprintf("O preço do %s em BRL é: R$ %.2f e ainda não é interessante vender", coin, price),
-		)
-	} else if coin == "bitcoin" && price >= 600_000 {
-		telegram.SendMessage(
-			fmt.Sprintf("O preço do %s em BRL é: R$ %.2f e é interessante vender", coin, price),
-		)
-	} else if coin == "ethereum" && price < 18_000 {
-		telegram.SendMessage(
-			fmt.Sprintf("O preço do %s em BRL é: R$ %.2f e ainda não é interessante vender", coin, price),
-		)
-	} else if coin == "ethereum" && price >= 18_000 {
-		telegram.SendMessage(
-			fmt.Sprintf("O preço do %s em BRL é: R$ %.2f e é interessante vender", coin, price),
-		)
-	} 
+	
+	if coin == "bitcoin" {
+		if price < 545_000 {
+			telegram.SendMessage(
+				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A COMPRA ESTÁ INTERESSANTE", coin, price),
+			)
+		} else if price > 610_000 {
+			telegram.SendMessage(
+				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A VENDA ESTÁ INTERESSANTE", coin, price),
+			)
+		}
+	} else if coin == "ethereum" {
+		if price < 8_000 {
+			telegram.SendMessage(
+				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A COMPRA ESTÁ INTERESSANTE", coin, price),
+			)
+		} else if price > 20_000 {
+			telegram.SendMessage(
+				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A VENDA ESTÁ INTERESSANTE", coin, price),
+			)
+		}
+	}
 }
 
 func RunExchanges() {
