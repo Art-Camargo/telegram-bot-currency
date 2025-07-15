@@ -49,15 +49,11 @@ func sendTelegramMessage(coin string, price float32) {
 	coin = strings.ToLower(coin)
 	
 	if coin == "bitcoin" {
-		if price < 545_000 {
+		if price < 530_000 {
 			telegram.SendMessage(
 				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A COMPRA ESTÁ INTERESSANTE", coin, price),
 			)
-		} else if price > 610_000 {
-			telegram.SendMessage(
-				fmt.Sprintf("O preço do %s em BRL é: R$ %.2f. CHAME IMEDIATAMENTE O ARTUR, POIS A VENDA ESTÁ INTERESSANTE", coin, price),
-			)
-		}
+		} 
 	} else if coin == "ethereum" {
 		if price < 8_000 {
 			telegram.SendMessage(
